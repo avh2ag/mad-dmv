@@ -153,7 +153,16 @@
                 timeString = $(sessionContainer).find('.hc_time').text();
               }
               return timeString;
-            }
+            };
+
+            var getClassDay = function(confirmBookingElement) {
+              var classDay = '';
+              var dayContainer = $(confirmBookingElement).closest('.bw-widget__day')[0] || null;
+              if (dayContainer) {
+                classDay = $(dayContainer).find('.bw-widget__date').text();
+              }
+              return classDay;
+            };
 
             var changeSignupInteraction = function () {
                 eliminateNextDay();
@@ -163,7 +172,8 @@
                   // run our code instead 
                   e.stopPropagation();
                   var classTime = getClassTime(this);
-                  console.log(classTime);
+                  var classDay = getClassDay(this);
+                  console.log(classTime, classDay);
                 });
             };
 
