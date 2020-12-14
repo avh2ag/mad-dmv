@@ -1,0 +1,20 @@
+/* right */	
+.transparent-header {left: 0 !important; padding-left:0 !important;}
+.transparent-header.canvas-slid {left: -300px !important;}
+.transparent-header.canvas-slid.modal-open {left: 0 !important}
+.modal-open #offcanvas.in + .offcanvas-toggle-right {
+	right: 25px !important; 
+	left: initial !important;
+	background-image: url("../images/toggle-menu.png");
+}
+.offcanvas-toggle-right::after {
+    content: "";
+}
+#offcanvas.in + .offcanvas-toggle-right::after {
+    content: "";
+}
+#offcanvas.in + .offcanvas-toggle-right {
+    background-image: url("../images/toggle-close.png");
+	z-index: 9999999;
+}
+/* right */

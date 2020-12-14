@@ -1,0 +1,414 @@
+/*
+OLT: Custom css 
+*Date: 31/1/17
+
+*/
+
+/*Default value overwritng*/
+select[size] {
+     height: 40px; 
+}
+
+/*For popup*/
+
+.overlayBackground {
+    position: fixed;
+    display: none;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background:url(../images/background/mapdark2.png);
+    z-index:9999;
+}
+.modalContainer{
+    bottom: 0;
+    display: none;
+    left: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    right: 0;
+    top: 0;
+    z-index: 10000;
+}
+.modalContainer .modalPop{
+    height:auto;
+    position:absolute;
+    margin:auto;
+    z-index:15000
+}
+#serach-pop{
+    display: inline-block;
+    float: right;
+    cursor:pointer;
+}
+.modalh{
+    margin-bottom: 10px !important;
+}
+#error,#errors,#loginerror,#shiperror{
+    font-weight: 600;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    text-align: center;
+    font-size: 14px;
+    color:#d40000;
+}
+
+/*For popup and home page form*/
+.formsize{
+    text-decoration: none !important;
+    color:inherit;
+}
+
+/*For Pagination*/
+.pagdiv{
+    text-align: center;
+    font-weight: bold;
+}
+
+/** For Product Listing Images */
+.product-single-img img {
+    margin: 0 auto;
+    height: 200px;
+    max-height: 200px;
+    min-height: 200px;
+}
+.wheel-container {
+    height: 200px;
+    position: relative;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+}
+.wheel-container .center_image {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100%;
+}   
+.tire-container { 
+    height: 80px;
+    position: relative;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+}
+.tire-container .center_image {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100%;
+}    
+.extra >a:hover{
+    font-family:'Helvetica-Bold' ;
+    text-decoration: none;
+}
+/*For product listin price*/
+.extra{
+    display:inline-block;
+}
+
+.strk{
+    text-decoration: line-through !important;
+}
+.saleprice{
+    color:#ed1d24 !important;
+}
+.pro-foot .disable.btn-default[disabled]:hover{
+    background-color: #ed1d24;
+    border-color:none;
+    transition: none;
+}
+
+/*Product Detail page */
+.anchor>a:hover{
+font-family:'Helvetica-Bold' ;
+text-decoration: none;    
+} 
+.anchor a:hover{
+font-family:'Helvetica-Bold' !important;
+text-decoration: none !important;    
+} 
+.btn-default[disabled]{
+    background-color: #d40000;
+    border-color: #d40000;
+}
+.btn-default[disabled]:hover{
+   background-color: #d40000;
+    border-color: #d40000;
+}
+
+.btn-warning[disabled]:hover{
+    background-color: #f26522;
+    border-color: #f26522;
+}
+/*For MAP*/
+
+.mapclose{
+    float:right;
+    margin:-10px -10px 0px 0px ;
+    position:relative;
+}
+.borderbtm{
+    border-bottom: 2px dotted #cecece;
+}
+
+/*Popover*/
+.popover-title {
+    background-color: #000000 !important;
+}
+
+.popover-content{
+    background: #ffffff !important;
+    color: #777777;
+}
+.popover{
+    z-index: 2000000;
+}
+
+/** Search Button Pop-up */
+.btn-search {
+    font-family: 'Helvetica-Bold';
+    font-style: italic;
+}
+.btn-search:hover, .btn-search:focus {
+    font-family: 'Helvetica-Bold';
+    font-style: italic;
+}
+
+/** Contact Us **/
+span.error {
+    color: #f00;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+}
+.content-title {
+  font-family: "Helvetica",sans-serif;
+  font-weight: 600;
+}
+
+
+@media (max-width: 767px) {
+  .main-cf label{width: 100%;text-align:left; }
+  .main-cf .form-control{width: 100%}
+}
+
+.red-title {
+  color: #ec1b21;
+  font-size: 16px;
+  font-family: "Helvetica",sans-serif;
+  font-weight: 600;
+}
+
+.cf-list{
+  margin-top:20px;
+}
+
+.cf-list > li {
+  border-top: 1px solid #000;
+  padding: 15px 0;
+}
+
+/* Search Section  drop down*/
+#search-section select{
+    background: #6b6b6b;
+    color: #ffffff;
+}
+#search-section select{
+    background-image: url("../images/arrow-icon-light.png");
+    background-repeat: no-repeat;
+    background-position: right 12px top 16px;   
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+#search-section select {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-color: #bcbcbc;
+}
+#search-section select {
+    background-image: url("../images/arrow-icon-light.png");
+    background-repeat: no-repeat;
+    background-position: right 12px top 16px;
+    height: 40px;   
+}
+
+/* Main Search section dropdown*/
+.product-single-img {
+    border: none;
+}
+.brand-container {
+    height: 160px;
+    margin: 15px 0;
+    border: 1px solid #464646;
+    position: relative;
+    display: block;
+    text-align: center;
+    overflow: hidden;
+}
+.brand-container .center_image {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 100%;
+}  
+.brand-img {
+    margin: 7px auto;
+    border:1px #eee solid;
+    height: 40px;
+    max-height: 40px;
+}
+.cart-header .table > tbody, .cart-header .panel-body {
+    background-color: #fff !important;
+}
+/** Animated Button **/
+.pro-foot1 {
+  padding: 0 10px;
+}
+.pro-foot1 > .btn-default.btn-animated {
+    background: #ed1d24 none repeat scroll 0 0;
+    border-color: #ed1d24;
+    height: 36px;
+    line-height: 17px;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+.pro-foot1 > .btn-dark.btn-animated {
+    background: #777777 none repeat scroll 0 0;
+    border-color: #777777;
+    height: 36px;
+    line-height: 17px;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+.pro-foot1 > .btn-default.btn-animated:hover {
+    background: #d51a20 none repeat scroll 0 0;
+}
+.pro-foot1 > .btn-dark.btn-animated:hover {
+    background: #777777 none repeat scroll 0 0;
+}
+.pro-foot1 > .btn-warning {
+    background: #f26522 none repeat scroll 0 0;
+    border-color: #f26522;
+    height: 36px;
+}
+.pro-foot1 > .btn-warning.btn-animated:hover {
+    background: #e64c00 none repeat scroll 0 0;
+}
+
+/* Animated CSS */
+
+/*[+]Login Form[+]*/
+.history-tbl > tbody > tr > td{
+  vertical-align: top !important;
+}
+.table-colored > thead > tr > th {
+  border-color: #D40101;
+  background-color: #D40101;
+  color: #fff;
+}
+.table.table-colored {
+  border-bottom-color: #D40101;
+}
+/*[-]Login Form[]*/
+
+/*View Order history*/
+.cart.table .amount {
+  text-align: center !important;
+}
+/*View Order history*/
+
+/* Pagination */
+ul.pagination li > a:hover,
+ul.pagination li > a:focus {
+    background-color: #000;
+    border-color: #000;
+}
+ul.pagination li.active a,
+.pagination > .active > a:hover,
+.pagination > .active > a:focus {
+    background-color: #000;
+    border-color: #000;
+}
+/* Pagination */
+
+/*support form*/
+
+.support_tab li{
+    width:33% !important;
+	margin-right: 0.5% !important;
+	float:left;
+}
+/* Added by Sandeep on 18.7.17 */
+.support_tab li:last-child{
+	margin-right:0 !important;
+}
+@media screen and (max-width:360px){
+	.support_tab li a{
+		font-size:14px !important;
+	}
+}
+/* upto here */
+
+.cust-support .collapse-style-1 .panel-heading a{
+    color: #464646 !important;
+}
+
+.cust-support .panel-group .panel-default{
+    border-color: #464646 !important;
+    overflow: hidden;
+}
+
+.need-help{
+  border-bottom: 1px solid #bfbfbf;
+  padding-bottom: 20px;
+}
+
+.need-help > span {
+  font-size: 30px;
+}
+/*support form*/
+
+/*sitemap*/
+.right-arrow{
+    margin-right:5px !important;
+}
+
+.siteextra.text-red a{
+    color: #ed1d24 !important;
+    font-family: Helvetica_light !important;
+}
+
+.data a,.list a{
+    font-family: "Helvetica_light",sans-serif !important;
+}
+/*Pacakge Search staggered*/
+.package-stagg{
+    border-color:#999999;
+    border:1px solid;
+}
+
+.brand-name, .brand-name:hover, .brand-focus  {
+    font-family: 'Helvetica-Bold';
+    font-style: italic;
+    font-size: 18px;
+}
