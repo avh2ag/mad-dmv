@@ -21,8 +21,27 @@
                 border: none;
             }
             .bw-widget.bw-widget--spacious {
-              max-height: 800px;
+              max-height: 1000px;
               overflow: scroll;
+            }
+            .instructions-pane {
+              height: 800px;
+            }
+            span.teal {
+              color: #69d7c4;
+              font-weight: bold;
+            }
+            .welcome-mad-btn .btn-default:hover {
+              background: #888888;
+    
+            }
+            .schedule-wrapper {
+              padding: 0;
+            }
+            .signup-header {
+              text-align:center;
+              padding:30px;
+              border-bottom: 4px solid #69d7c4;
             }
         </style>
     </head>
@@ -36,8 +55,9 @@
                   <div class="header-left clearfix">
                     <!-- logo -->
                     <div id="logo" class="logo">
-                      <a href="https://www.madabolic.com/">
-                        <span class="logo-font-top"><img src="./assets/website_header_setting-desktop_logo-3-v2.png"></span></a>
+                      <a href="#">
+                        <span class="logo-font-top"><img src="./assets/website_header_setting-desktop_logo-3-v2.png" /></span>
+                      </a>
                     </div>
                     <!-- name-and-slogan -->
                   </div>
@@ -87,6 +107,7 @@
                                   background-color: none !important;
                                   color: #FFFFFF !important;
                                 }
+
                               </style>
                               <li>
                                 <a href="https://apps.apple.com/us/app/madabolic-inc/id727446424" class="btn download_app">App</a>
@@ -106,28 +127,52 @@
             </div>
     
         </header>
-        <main class="container-fluid custom_container" style="padding:30px;">
-            <section class="row">
-              <div class="col-md-7 white-bg">
-                <div class="intro-header">
-                  <div class="col-md-4 col-md-offset-0 col-sm-6 col-sm-offset-3">
-                    <div class="logo_intro"></div>
-                  </div>
-                  <div class="col-md-5 col-sm-6">
-                    <h1>10 days <span>for</span> $10</h1>
-                  </div>
-                  <div class="col-md-3 col-sm-6">
-                    <h4>intro offer</h4>
-                    <h5>for first time clients only</h5>
+        <main class="container-fluid custom_container">
+            <section id="banner-section" class="row">
+              <div class="section-welcome-mad sect-own-a-mad">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                      <div class="welcome-mad">
+                        <img src="https://www.madabolic.com/assets/images/madabolic_new_to_mad_ico.png" class="img-responsive center-block" />
+                                  
+                        <h2 data-aos="fade-right" data-aos-duration="1000" data-aos-delay="100" class="aos-init aos-animate">FIRST</h2>
+                        <h2 data-aos="fade-right" data-aos-duration="1000" data-aos-delay="500" class="aos-init aos-animate">CLASS</h2>
+                        <h2 data-aos="fade-right" data-aos-duration="1000" data-aos-delay="900" class="aos-init aos-animate"><span>FREE</span></h2>
+                        <p>Limited time only! New clients can sign up for their first class <span style="text-decoration: underline; font-weight:bold;">FREE</span>.
+                        </p>
+                        <p>What are you waiting for?</p>
+                        <div data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="1100" class="welcome-mad-btn aos-init aos-animate">
+                          <a class="btn btn-default js__signup" data-signup-loc="js__h-street" >SIGN UP NOW <span class="teal">H Street</span> </a>
+                          <a class="btn btn-default js__signup" data-signup-loc="js__arlington" >SIGN UP NOW <span class="teal">Arlington</span></a>						
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-md-5">
+            </section>  
+            <section id="signup-section" class="row" style="display: none;">
+              <div class="white-bg signup-header">
+                <h1 class="js__h-street js__location-specific"><span class="teal">H Street</span> - Sign Up</h2>
+                <h1 class="js__arlington js__location-specific"><span class="teal">Arlington</span> - Sign Up</h2>
+              </div>
+
+              <div class="col-md-7" style="background:url(./assets/mad_dmv.jpg)center top; filter: grayscale(100%); background-repeat: no-repeat;">
+                <div class="instructions-pane"></div>
+              </div>
+
+              <div class="col-md-5 schedule-wrapper" >
                 <healcode-widget data-type="schedules" data-widget-partner="object" data-widget-id="7013419643b4"
                 data-widget-version="1" data-start-date="10-13-2020">       
                 </healcode-widget>  
               </div>
-            </section>  
+              <div class="col-md-5 schedule-wrapper" id="arlington" style="display: none;">
+                <healcode-widget data-type="schedules" data-widget-partner="object" data-widget-id="7013419643b4"
+                data-widget-version="1" data-start-date="10-13-2020">       
+                </healcode-widget>  
+              </div>
+            </section>
         </main>
 
 
@@ -178,12 +223,22 @@
             };
 
             $(document).ready(function () {
-                var x = new MutationObserver(function (e) {
-                    var arrayLength = e.length;
-                    changeSignupInteraction();
-                });
+              var locationToggleSelector = '.js__location-specific';
+              var observer = new MutationObserver(function (e) {
+                  var arrayLength = e.length;
+                  changeSignupInteraction();
+              });
+              observer.observe($("healcode-widget")[0], {childList: true, subtree: true});
 
-                x.observe($("healcode-widget")[0], {childList: true, subtree: true});
+              $('.js__signup').on('click', function(e) {
+                var activeLocationSelector = '.' + $(this).attr('data-signup-loc');
+                $('#signup-section').show();
+                $(locationToggleSelector).hide();
+                $(activeLocationSelector).show();
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('#signup-section').offset().top
+                }, 1500);
+              });
             });
        </script>  
     </body>
