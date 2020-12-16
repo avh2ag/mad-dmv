@@ -26,6 +26,9 @@
             }
             .instructions-pane {
               height: 800px;
+              background: url(./assets/mad_dmv.jpg) center top; 
+              filter: grayscale(100%); 
+              background-repeat: no-repeat;
             }
             span.teal {
               color: #69d7c4;
@@ -158,16 +161,15 @@
                 <h1 class="js__arlington js__location-specific"><span class="teal">Arlington</span> - Sign Up</h2>
               </div>
 
-              <div class="col-md-7" style="background:url(./assets/mad_dmv.jpg)center top; filter: grayscale(100%); background-repeat: no-repeat;">
-                <div class="instructions-pane"></div>
+              <div class="col-md-7 instructions-pane">
               </div>
 
-              <div class="col-md-5 schedule-wrapper" >
-                <healcode-widget data-type="schedules" data-widget-partner="object" data-widget-id="7013419643b4"
+              <div class="col-md-5 schedule-wrapper js__arlington js__location-specific" >
+                <healcode-widget data-type="schedules" data-widget-partner="object" data-widget-id="fd1341922eca"
                 data-widget-version="1" data-start-date="10-13-2020">       
                 </healcode-widget>  
               </div>
-              <div class="col-md-5 schedule-wrapper" id="arlington" style="display: none;">
+              <div class="col-md-5 schedule-wrapper js__h-street  js__location-specific" >
                 <healcode-widget data-type="schedules" data-widget-partner="object" data-widget-id="7013419643b4"
                 data-widget-version="1" data-start-date="10-13-2020">       
                 </healcode-widget>  
