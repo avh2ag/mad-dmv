@@ -13,6 +13,7 @@
         <link href="./assets/bootstrap.css" rel="stylesheet">
         <link href="./assets/font-awesome/font-awesome.css" rel="stylesheet">
         <link href="./assets/style.css" rel="stylesheet">
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <link href="assets/madabolic.css" rel="stylesheet" type="text/css"ealc />
         <style>
@@ -244,7 +245,7 @@
                 <h4 class="modal-title" id="signup-modal-title">Your Reservation</h4>
               </div>
               <div class="modal-body">
-                <form id="confirm-form">
+                <form id="confirm-form" data-toggle="validator" data-disable="false">
                   <div class="form-group">
                     <label for="location">Location</label>
                     <input readonly class="form-control" id="location" name="location" />
@@ -265,6 +266,11 @@
                     <label for="phone">Your Phone Number</label>
                     <input class="form-control" id="phone" name="phone" required  />
                   </div>
+                  <!-- <div class="form-group">
+                    <div class="g-recaptcha" data-sitekey="6LezgA4aAAAAAPGnixmVFI4S4nFO_qh2-biHOp4t
+                    "></div>
+                    <span class="help-block" style="display: none;">Please check that you are not a robot.</span>
+                  </div> -->
                 </form>
                 <div id="confirmation-success" style="display:none;">
                   You're all set! Be on the lookout for a confirmation text from us. If you don't see one within 24 hours, shoot us a message <a href="https://www.instagram.com/mad_dmv/" target="_blank">@mad-dmv</a>.
