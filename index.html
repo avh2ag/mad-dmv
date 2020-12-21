@@ -16,6 +16,7 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js" integrity="sha512-dTu0vJs5ndrd3kPwnYixvOCsvef5SGYW/zSSK4bcjRBcZHzqThq7pt7PmCv55yb8iBvni0TSeIDV8RYKjZL36A==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.5/jquery.inputmask.min.js" integrity="sha512-sR3EKGp4SG8zs7B0MEUxDeq8rw9wsuGVYNfbbO/GLCJ59LBE4baEfQBVsP2Y/h2n8M19YV1mujFANO1yA3ko7Q==" crossorigin="anonymous"></script>
         <link href="assets/madabolic.css" rel="stylesheet" type="text/css"ealc />
         <style>
             .navbar-default {
@@ -36,7 +37,7 @@
               font-weight: bold;
             }
             .welcome-mad-btn .btn-default:hover {
-              background: #888888;
+              background: #999999;
     
             }
             .schedule-wrapper {
@@ -76,7 +77,6 @@
             }
             .welcome-mad ol, .welcome-mad li {
               z-index: 2;
-              color: white;
               color: #fff;
               position: relative;
             }
@@ -93,6 +93,11 @@
             form.loading {
               opacity: .5;
             }
+            .form-control::-webkit-input-placeholder { color: #999999; }  /* WebKit, Blink, Edge */
+            .form-control:-moz-placeholder { color: #999999; }  /* Mozilla Firefox 4 to 18 */
+            .form-control::-moz-placeholder { color: #999999; }  /* Mozilla Firefox 19+ */
+            .form-control:-ms-input-placeholder { color: #999999; }  /* Internet Explorer 10-11 */
+            .form-control::-ms-input-placeholder { color: #999999; }  /* Microsoft Edge */
         </style>
     </head>
     <body>
@@ -246,7 +251,7 @@
                 <h4 class="modal-title" id="signup-modal-title">Your Reservation</h4>
               </div>
               <div class="modal-body">
-                <form id="confirm-form" data-toggle="validator" role="form">
+                <form id="confirm-form" role="form" data-toggle="validator" >
                   <div class="form-group">
                     <label for="location">Location</label>
                     <input readonly class="form-control" id="location" name="location" />
@@ -257,22 +262,24 @@
                   </div>
                   <div class="form-group">
                     <label for="name">Your Name</label>
-                    <input class="form-control" id="name" name="name" required  />
+                    <input class="form-control" id="name" name="name" required placeholder="First Last" />
                   </div>
                   <div class="form-group">
                     <label for="email">Your Email</label>
-                    <input type="email"  class="form-control" id="email" name="email"  required />
+                    <input type="email"  class="form-control" id="email" name="email" required placeholder="example@email.com" />
                   </div>
                   <div class="form-group">
                     <label for="phone">Your Phone Number</label>
-                    <input class="form-control" id="phone" name="phone" required  />
+                    <input class="form-control" id="phone" name="phone" required placeholder="123-456-7890"  />
                   </div>
                   <!-- <div class="form-group">
                     <div class="g-recaptcha" data-sitekey="6LezgA4aAAAAAPGnixmVFI4S4nFO_qh2-biHOp4t
                     "></div>
                     <span class="help-block" style="display: none;">Please check that you are not a robot.</span>
                   </div> -->
-                  <button id="submit-form" type="submit" class="btn btn-primary" style="margin-bottom: 10px;">Sign Up</button>
+                  <div class="form-group">
+                    <button id="submit-form" type="submit" class="btn btn-primary">Sign Up</button>
+                  </div>
                 </form>
                 <div id="confirmation-success" style="display:none;">
                   You're all set! Be on the lookout for a confirmation text from us. If you don't see one within 24 hours, shoot us a message <a href="https://www.instagram.com/mad_dmv/" target="_blank">@mad-dmv</a>.
@@ -293,6 +300,10 @@
               var $signupForm = $('form#confirm-form');
               var $confirmation = $('#confirmation-success');
               var $submitForm = $('#submit-form');
+         
+              // turn on validations
+              $submitForm.validator();
+
               var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxEpSr5egNIZXYNN7pswlpXQG-e2tW4FJpn_0wrFktQ0oXBtCk/exec';
               // TWIST: YOU ACTUALLY NEED TO ELIMINATE THE 0 AND THE 1 ON INVALID TIMESTRING
               var firstValidDay = moment(new Date()).add(2, 'days').format('YYYY-MM-DD');
@@ -370,7 +381,6 @@
               $('.js__signup').on('click', function(e) {
                 var activeLocationSelector = '.' + $(this).attr('data-signup-loc');
                 var locationDisplayName = $(this).attr('data-location');
-                console.log(locationDisplayName);
                 $('#signup-section').show();
                 selectCurrentDay();
                 $(locationToggleSelector).hide();
@@ -405,6 +415,8 @@
                   }
                 })
               });
+
+              $('#phone').inputmask({"mask": "(999) 999-9999"}); //specifying options
 
             });
 
