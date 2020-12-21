@@ -99,6 +99,157 @@
             .form-control:-ms-input-placeholder { color: #999999; }  /* Internet Explorer 10-11 */
             .form-control::-ms-input-placeholder { color: #999999; }  /* Microsoft Edge */
         </style>
+        <script>
+
+            $(document).ready(function () {
+              var $signupForm = $('form#confirm-form');
+              var $confirmation = $('#confirmation-success');
+              var $submitForm = $('#submit-form');
+          
+              // turn on validations
+              $submitForm.validator();
+
+              var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxEpSr5egNIZXYNN7pswlpXQG-e2tW4FJpn_0wrFktQ0oXBtCk/exec';
+              // TWIST: YOU ACTUALLY NEED TO ELIMINATE THE 0 AND THE 1 ON INVALID TIMESTRING
+              var firstValidDay = moment(new Date()).add(2, 'days').format('YYYY-MM-DD');
+              // question -- is there a time cutoff for sliding in tomorrow?
+              var todaySelector = '.date-' + moment().format('YYYY-MM-DD');
+              var tomorrowSelector = '.date-' + moment().add(1, 'days').format('YYYY-MM-DD');
+              var invalidTimeStrings = [todaySelector, tomorrowSelector];
+              
+              var eliminateNextDay = function() {
+                  $('.bw-widget__day').each(function(index, el) {
+                    invalidTimeStrings.forEach(function(timeSelector) {
+                      var hasCurrentDay = $(el).find(timeSelector)[0];
+                      if (hasCurrentDay) {
+                        $(el).hide();
+                      }
+                    });
+
+                  });
+              };
+
+              var selectCurrentDay = function() {
+                var selectedDayEl = $('[data-bw-startdate=' + firstValidDay + ']');
+                var selectedDayClass = 'bw-calendar__day--current';
+                $('.' + selectedDayClass).removeClass(selectedDayClass);
+                $(selectedDayEl).each(function(idx, dayEl) {
+                  var calendarTdEl = $(dayEl).closest('.bw-calendar__day');
+                  $(calendarTdEl).addClass(selectedDayClass);
+                });
+              };
+
+              var getClassTime = function(confirmBookingElement) {
+                // given a book element, find the associated time period for submission
+                var timeString = '';
+                var sessionContainer = $(confirmBookingElement).closest('.bw-session__basics')[0] || null;
+                // confirm that we found something
+                if (sessionContainer) {
+                  timeString = $(sessionContainer).find('.hc_time').text();
+                }
+                return timeString;
+              };
+
+              var getClassDay = function(confirmBookingElement) {
+                var classDay = '';
+                var dayContainer = $(confirmBookingElement).closest('.bw-widget__day')[0] || null;
+                if (dayContainer) {
+                  classDay = $(dayContainer).find('.bw-widget__date').text();
+                }
+                return classDay;
+              };
+
+              var changeSignupInteraction = function () {
+                  eliminateNextDay();
+                  $(".bw-widget__cart_button").on('click', function (e) {
+                    // var parentDay = 
+                    e.preventDefault(); // block a form submission
+                    // run our code instead 
+                    e.stopPropagation();
+                    var classTime = getClassTime(this);
+                    var classDay = getClassDay(this);
+                    $('#class-time').val(classDay + ' at ' + classTime);
+                    $('#signup-modal').modal('show');
+                  });
+              };
+              selectCurrentDay();
+              var locationToggleSelector = '.js__location-specific';
+              var observer = new MutationObserver(function (e) {
+                  var arrayLength = e.length;
+                  changeSignupInteraction();
+              });
+              $("healcode-widget").each(function(idx, widget) {
+                $(widget).attr('data-start-date', firstValidDay);
+                observer.observe(widget, {childList: true, subtree: true});
+              });
+
+              $('.js__signup').on('click', function(e) {
+                var activeLocationSelector = '.' + $(this).attr('data-signup-loc');
+                var locationDisplayName = $(this).attr('data-location');
+                $('#signup-section').show();
+                selectCurrentDay();
+                $(locationToggleSelector).hide();
+                $(activeLocationSelector).show();
+                $('#location').val(locationDisplayName);
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $('#signup-section').offset().top
+                }, 1500);
+              });
+
+              $signupForm.on('valid.bs.validator', function(e) {
+                var response = grecaptcha.getResponse();
+                if (!response || response.length === 0) {
+                  $('#captcha-warning').show();
+                  $submitForm.attr('disabled', true);
+                } else { 
+                  $('#captcha-warning').hide();
+                  $submitForm.attr('disabled', false);
+                }
+              });
+
+              // form submit code
+              $submitForm.on('click', function(e) {
+                e.preventDefault();
+                
+                var response = grecaptcha.getResponse();
+                if (response === '') {
+                  // show alert
+                } else {
+                  $(this).attr('disabled', true);
+                  $signupForm.toggleClass('loading', true);
+                  var jqxhr = $.ajax({
+                    url: FORM_ENDPOINT,
+                    method: "GET",
+                    dataType: "json",
+                    data: $signupForm.serialize(),
+                    success: function(e) {
+                      $signupForm.hide();
+                      $confirmation.show();
+                      $submitForm.hide();
+                      $submitForm.attr('disabled', false);
+                    },
+                    error: function(e) {
+                      alert('There was an error processing your request. Please Try again.')
+                    },
+                    complete: function(e) {
+                      $signupForm.toggleClass('loading', false);
+                    }
+                  });
+                }
+              });
+
+              $('#phone').inputmask({"mask": "(999) 999-9999"}); 
+
+            });
+
+            var onCaptchaClick = function() {
+              $('#confirm-form').validator('validate');
+              if(! $('#confirm-form').has('.has-error')){ 
+                $('#submit-form').attr('disabled', false);
+              }
+            }
+            
+        </script>  
     </head>
     <body>
         <header class="header dark clearfix effect3 madabolic_header">
@@ -272,11 +423,14 @@
                     <label for="phone">Your Phone Number</label>
                     <input class="form-control" id="phone" name="phone" required placeholder="123-456-7890"  />
                   </div>
-                  <!-- <div class="form-group">
-                    <div class="g-recaptcha" data-sitekey="6LezgA4aAAAAAPGnixmVFI4S4nFO_qh2-biHOp4t
+                  <div class="form-group">
+                    <div class="g-recaptcha" data-callback="onCaptchaClick" data-sitekey="6LezgA4aAAAAAPGnixmVFI4S4nFO_qh2-biHOp4t
                     "></div>
                     <span class="help-block" style="display: none;">Please check that you are not a robot.</span>
-                  </div> -->
+                  </div>
+                  <p class="text-warning" id="captcha-warning" style="display: none;">
+                    Please check the box above before submitting
+                  </p>
                   <div class="form-group">
                     <button id="submit-form" type="submit" class="btn btn-primary">Sign Up</button>
                   </div>
@@ -288,141 +442,10 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-  
               </div>
             </div>
           </div>
         </div>
-
-        <script>
-
-            $(document).ready(function () {
-              var $signupForm = $('form#confirm-form');
-              var $confirmation = $('#confirmation-success');
-              var $submitForm = $('#submit-form');
-         
-              // turn on validations
-              $submitForm.validator();
-
-              var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxEpSr5egNIZXYNN7pswlpXQG-e2tW4FJpn_0wrFktQ0oXBtCk/exec';
-              // TWIST: YOU ACTUALLY NEED TO ELIMINATE THE 0 AND THE 1 ON INVALID TIMESTRING
-              var firstValidDay = moment(new Date()).add(2, 'days').format('YYYY-MM-DD');
-              // question -- is there a time cutoff for sliding in tomorrow?
-              var todaySelector = '.date-' + moment().format('YYYY-MM-DD');
-              var tomorrowSelector = '.date-' + moment().add(1, 'days').format('YYYY-MM-DD');
-              var invalidTimeStrings = [todaySelector, tomorrowSelector];
-              
-              var eliminateNextDay = function() {
-                  $('.bw-widget__day').each(function(index, el) {
-                    invalidTimeStrings.forEach(function(timeSelector) {
-                      var hasCurrentDay = $(el).find(timeSelector)[0];
-                      if (hasCurrentDay) {
-                        $(el).hide();
-                      }
-                    });
-
-                  });
-              };
-
-              var selectCurrentDay = function() {
-                var selectedDayEl = $('[data-bw-startdate=' + firstValidDay + ']');
-                var selectedDayClass = 'bw-calendar__day--current';
-                $('.' + selectedDayClass).removeClass(selectedDayClass);
-                $(selectedDayEl).each(function(idx, dayEl) {
-                  var calendarTdEl = $(dayEl).closest('.bw-calendar__day');
-                  $(calendarTdEl).addClass(selectedDayClass);
-                });
-              };
-
-              var getClassTime = function(confirmBookingElement) {
-                // given a book element, find the associated time period for submission
-                var timeString = '';
-                var sessionContainer = $(confirmBookingElement).closest('.bw-session__basics')[0] || null;
-                // confirm that we found something
-                if (sessionContainer) {
-                  timeString = $(sessionContainer).find('.hc_time').text();
-                }
-                return timeString;
-              };
-
-              var getClassDay = function(confirmBookingElement) {
-                var classDay = '';
-                var dayContainer = $(confirmBookingElement).closest('.bw-widget__day')[0] || null;
-                if (dayContainer) {
-                  classDay = $(dayContainer).find('.bw-widget__date').text();
-                }
-                return classDay;
-              };
-
-              var changeSignupInteraction = function () {
-                  eliminateNextDay();
-                  $(".bw-widget__cart_button").on('click', function (e) {
-                    // var parentDay = 
-                    e.preventDefault(); // block a form submission
-                    // run our code instead 
-                    e.stopPropagation();
-                    var classTime = getClassTime(this);
-                    var classDay = getClassDay(this);
-                    $('#class-time').val(classDay + ' at ' + classTime);
-                    $('#signup-modal').modal('show');
-                  });
-              };
-              selectCurrentDay();
-              var locationToggleSelector = '.js__location-specific';
-              var observer = new MutationObserver(function (e) {
-                  var arrayLength = e.length;
-                  changeSignupInteraction();
-              });
-              $("healcode-widget").each(function(idx, widget) {
-                $(widget).attr('data-start-date', firstValidDay);
-                observer.observe(widget, {childList: true, subtree: true});
-              });
-
-              $('.js__signup').on('click', function(e) {
-                var activeLocationSelector = '.' + $(this).attr('data-signup-loc');
-                var locationDisplayName = $(this).attr('data-location');
-                $('#signup-section').show();
-                selectCurrentDay();
-                $(locationToggleSelector).hide();
-                $(activeLocationSelector).show();
-                $('#location').val(locationDisplayName);
-                $([document.documentElement, document.body]).animate({
-                  scrollTop: $('#signup-section').offset().top
-                }, 1500);
-              });
-
-              // form submit code
-              $submitForm.on('click', function(e) {
-                e.preventDefault();
-                $(this).attr('disabled', true);
-                $signupForm.toggleClass('loading', true);
-                var jqxhr = $.ajax({
-                  url: FORM_ENDPOINT,
-                  method: "GET",
-                  dataType: "json",
-                  data: $signupForm.serialize(),
-                  success: function(e) {
-                    $signupForm.hide();
-                    $confirmation.show();
-                    $submitForm.hide();
-                    $submitForm.attr('disabled', false);
-                  },
-                  error: function(e) {
-                    alert('There was an error processing your request. Please Try again.')
-                  },
-                  complete: function(e) {
-                    $signupForm.toggleClass('loading', false);
-                  }
-                })
-              });
-
-              $('#phone').inputmask({"mask": "(999) 999-9999"}); //specifying options
-
-            });
-
-            // google script link:
-            
-       </script>  
       <script src="https://widgets.healcode.com/javascripts/healcode.js" type="text/javascript"></script>
     </body>
 </html>
