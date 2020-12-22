@@ -3956,7 +3956,7 @@ fieldset legend {
     border: 1px solid #fff
 }
 .sect-own-a-mad .welcome-mad-btn {
-	position: static;
+	position: static !important;
     transform: translate(0, 0)
 }
 .own_testimonial {
