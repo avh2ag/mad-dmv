@@ -102,6 +102,14 @@
             .form-control::-moz-placeholder { color: #999999; }  /* Mozilla Firefox 19+ */
             .form-control:-ms-input-placeholder { color: #999999; }  /* Internet Explorer 10-11 */
             .form-control::-ms-input-placeholder { color: #999999; }  /* Microsoft Edge */
+            #locations h2 {
+              color: white;
+              text-align: center;
+            }
+            #locations .btn.btn-default {
+              margin: 0 auto;
+              display: block;
+            }
         </style>
         <script>
 
@@ -113,34 +121,26 @@
               // turn on validations
               $submitForm.validator();
 
-              var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxEpSr5egNIZXYNN7pswlpXQG-e2tW4FJpn_0wrFktQ0oXBtCk/exec';
-              // TWIST: YOU ACTUALLY NEED TO ELIMINATE THE 0 AND THE 1 ON INVALID TIMESTRING
-              var firstValidDay = moment(new Date()).add(2, 'days').format('YYYY-MM-DD');
-              // question -- is there a time cutoff for sliding in tomorrow?
-              var todaySelector = '.date-' + moment().format('YYYY-MM-DD');
-              var tomorrowSelector = '.date-' + moment().add(1, 'days').format('YYYY-MM-DD');
-              var invalidTimeStrings = [todaySelector, tomorrowSelector];
-              
-              var eliminateNextDay = function() {
-                  $('.bw-widget__day').each(function(index, el) {
-                    invalidTimeStrings.forEach(function(timeSelector) {
-                      var hasCurrentDay = $(el).find(timeSelector)[0];
-                      if (hasCurrentDay) {
-                        $(el).hide();
-                      }
-                    });
+              var showModal = function() {
+                $('#signup-modal').modal('show');
+              }
 
-                  });
-              };
+              var FORM_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzyoZe17H0PPoSW0tIjmMn5BDLoANyqIOEH8YYP8Ij-ugwc8satt9BMceal7st1D5sR/exec';
+
+              $('.js__cta').on('click', function(e) {
+                var activeLocationSelector = '.' + $(this).attr('data-signup-loc');
+                
+                // showModal();
+                
+                $([document.documentElement, document.body]).animate({
+                  scrollTop: $(activeLocationSelector).offset().top
+                }, 1500);
+              });
 
               $('.js__signup').on('click', function(e) {
-                var activeLocationSelector = '.' + $(this).attr('data-signup-loc');
                 var locationDisplayName = $(this).attr('data-location');
-                $('#signup-section').show();
                 $('#location').val(locationDisplayName);
-                $([document.documentElement, document.body]).animate({
-                  scrollTop: $('#signup-section').offset().top
-                }, 1500);
+                showModal();
               });
 
               $signupForm.on('valid.bs.validator', function(e) {
@@ -290,15 +290,17 @@
                   <h2  >NEW</h2>
                   <h2 >LOCATIONS</h2>
                   <div data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="1100" class="welcome-mad-btn aos-init aos-animate">
-                    <a class="btn btn-default js__signup" data-signup-loc="js__alexandria" data-location="MAD Alexandria">MAD <span class="teal">Alexandria</span> </a>
-                    <a class="btn btn-default js__signup" data-signup-loc="js__dupont" data-location="MAD Dupont">MAD <span class="teal">Dupont Circle</span></a>						
+                    <a class="btn btn-default js__cta" data-signup-loc="alexandria" data-location="MAD Alexandria">MAD <span class="teal">Alexandria</span> </a>
+                    <a class="btn btn-default js__cta" data-signup-loc="dupont" data-location="MAD Dupont">MAD <span class="teal">Dupont Circle</span></a>						
                   </div>
                 </div>
               </div>
             </section>
             <section id="locations">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 alexandria">
+                  <h2>Alexandria</h2>
+                  <button class="btn btn-default js__signup" data-location="MAD Alexandria" style="margin: 0 auto; display:block;">Send Me More Info</button>
                   <iframe
                     width="100%"
                     height="50%"
@@ -306,7 +308,9 @@
                     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyDufBB97ZQeHE4usm20nuL-CUUnEfF_p3c&q=704+n+Washington+st+Alexandria&zoom=15" allowfullscreen>
                   </iframe>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 dupont">
+                  <h2>Dupont</h2>
+                  <button class="btn btn-default js__signup" data-location="MAD Dupont">Send Me More Info</button>
                   <iframe
                     width="100%"
                     height="50%"
@@ -315,24 +319,19 @@
                   </iframe>
                 </div>
               </div>
-
-              </section>
+            </section>
         </main>
         <div class="modal fade" id="signup-modal">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="signup-modal-title">Your Reservation</h4>
+                <h4 class="modal-title" id="signup-modal-title">Send Me More Info</h4>
               </div>
               <div class="modal-body">
                 <form id="confirm-form" role="form" data-toggle="validator" >
                   <div class="form-group">
                     <label for="location">Location</label>
                     <input readonly class="form-control" id="location" name="location" />
-                  </div>
-                  <div class="form-group">
-                    <label for="class-time">Class Time</label>
-                    <input readonly class="form-control" id="class-time" name="class" />
                   </div>
                   <div class="form-group">
                     <label for="name">Your Name</label>
@@ -350,10 +349,6 @@
                     <div class="help-block with-errors"></div>
                   </div>
                   <div class="form-group">
-                    <label for="referredby">Referring Client</label>
-                    <input class="form-control uppercase" id="referredby" name="referral" />
-                  </div>
-                  <div class="form-group">
                     <div class="g-recaptcha" data-callback="onCaptchaClick" data-sitekey="6LezgA4aAAAAAPGnixmVFI4S4nFO_qh2-biHOp4t
                     "></div>
                     <span class="help-block" style="display: none;">Please check that you are not a robot.</span>
@@ -366,8 +361,7 @@
                   </div>
                 </form>
                 <div id="confirmation-success" style="display:none;">
-                  You're all set! Be on the lookout for a confirmation text from us. If you don't see one within 24 hours, shoot us a message <a href="https://www.instagram.com/mad_dmv/" target="_blank">@mad-dmv</a>.
-                  Make sure to always show up early as we don’t take late arrivals.
+                  You're all set! We'll keep you posted on any promotions and information as we get ready to open. Can't wait to see you!
                 </div>
               </div>
               <div class="modal-footer">
@@ -376,6 +370,5 @@
             </div>
           </div>
         </div>
-      <!-- <script src="https://widgets.healcode.com/javascripts/healcode.js" type="text/javascript"></script> -->
     </body>
 </html>
